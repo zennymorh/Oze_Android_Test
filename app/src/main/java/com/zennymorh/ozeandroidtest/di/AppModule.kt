@@ -25,32 +25,4 @@ object AppModule {
     ): MyApplication{
         return app as MyApplication
     }
-
-    @Provides
-    fun provideBaseUrl() = BASE_URL
-
-    @Provides
-    @Singleton
-    fun provideRetrofitInstance(): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okhttpClient())
-            .build()
-
-    @Singleton
-    @Provides
-    fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
-
-    @Singleton
-    @Provides
-    fun getLoggingIntercepter() =
-        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
-
-    @Singleton
-    @Provides
-    fun okhttpClient(): OkHttpClient =
-        OkHttpClient.Builder()
-            .addInterceptor(getLoggingIntercepter())
-            .build()
 }

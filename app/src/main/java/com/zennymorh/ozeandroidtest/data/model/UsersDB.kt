@@ -1,12 +1,24 @@
 package com.zennymorh.ozeandroidtest.data.model
 
+import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import kotlinx.android.parcel.IgnoredOnParcel
+import kotlinx.android.parcel.Parcelize
 
-data class Users(
+@Parcelize
+data class UsersDB(
     val incompleteResults: Boolean,
-    val users: List<User>,
+    val users: List<UserDb>,
     val totalCount: Int
-) {
-    data class User(
+): Parcelable {
+
+    @IgnoredOnParcel
+    val endOfPage = totalCount / 30
+
+    @Parcelize
+    @Entity(tableName = "users")
+    data class UserDb(
         val avatarUrl: String,
         val eventsUrl: String,
         val followersUrl: String,
@@ -14,6 +26,7 @@ data class Users(
         val gistsUrl: String,
         val gravatarId: String,
         val htmlUrl: String,
+        @PrimaryKey
         val id: Int,
         val login: String,
         val nodeId: String,
@@ -26,5 +39,14 @@ data class Users(
         val subscriptionsUrl: String,
         val type: String,
         val url: String
-    )
+    ): Parcelable
+
+    @Parcelize
+    @Entity(tableName = "user_keys")
+    data class UserKeys(
+        @PrimaryKey
+        val id: Int,
+        val prevKey: Int?,
+        val nextKey: Int?
+    ): Parcelable
 }
