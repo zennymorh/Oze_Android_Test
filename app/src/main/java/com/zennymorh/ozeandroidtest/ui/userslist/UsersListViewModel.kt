@@ -8,6 +8,7 @@ import com.zennymorh.ozeandroidtest.data.model.UsersDB
 import com.zennymorh.ozeandroidtest.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Flowable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @HiltViewModel

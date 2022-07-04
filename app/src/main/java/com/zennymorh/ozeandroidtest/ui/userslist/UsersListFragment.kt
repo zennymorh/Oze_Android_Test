@@ -7,20 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zennymorh.ozeandroidtest.R
-import com.zennymorh.ozeandroidtest.adapters.DataListDiffCallback
-import com.zennymorh.ozeandroidtest.adapters.UserClickListener
-import com.zennymorh.ozeandroidtest.adapters.UsersListAdapter
+import com.zennymorh.ozeandroidtest.ui.userslist.adapters.DataListDiffCallback
+import com.zennymorh.ozeandroidtest.ui.userslist.adapters.UserClickListener
+import com.zennymorh.ozeandroidtest.ui.userslist.adapters.UsersListAdapter
 import com.zennymorh.ozeandroidtest.data.model.UsersDB
-import com.zennymorh.ozeandroidtest.data.repository.ListState
 import com.zennymorh.ozeandroidtest.databinding.FragmentUsersListBinding
-import com.zennymorh.ozeandroidtest.ui.userdetail.UserDetailFragmentArgs
+import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.flow.collect
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 
 
@@ -35,10 +32,9 @@ class UsersListFragment : Fragment() {
     private val onUserItemSelected by lazy {
         object : UserClickListener {
             override fun invoke(p1: UsersDB.UserDb) {
-                val action = UsersListFragmentDirections.actionUsersListFragmentToUserDetailFragment(p1)
+                val action = UsersListFragmentDirections.actionUsersListFragmentToUserDetailFragment(p1.login.toString())
                 findNavController().navigate(action)
             }
-
         }
     }
 
@@ -53,26 +49,25 @@ class UsersListFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentUsersListBinding.inflate(inflater, container, false)
 
-        binding.placesListRecycler.apply {
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL, false)
-            adapter = userListAdapter
-        }
-
-        disposable.add(viewModel.getUsers().subscribe {
-            if (it != null ) Log.d("USERS", it.toString())
-            userListAdapter.submitData(lifecycle, it)
-        })
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.placesListRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL, false)
+            adapter = userListAdapter
+        }
+
+        disposable.add(viewModel.getUsers()
+            .subscribe {
+                userListAdapter.submitData(lifecycle, it)
+        })
     }
 
     override fun onDestroy() {
-        disposable.dispose()
+        disposable.clear()
 
         super.onDestroy()
     }

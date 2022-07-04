@@ -7,7 +7,7 @@ import com.zennymorh.ozeandroidtest.data.model.UsersDB
 @Database(
     entities = [UsersDB.UserDb::class, UsersDB.UserKeys::class],
     exportSchema = false,
-    version = 1
+    version = 2
 )
 abstract class UserDatabase: RoomDatabase() {
 

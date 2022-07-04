@@ -10,7 +10,7 @@ import com.zennymorh.ozeandroidtest.data.model.UsersDB
 interface UserRemoteKeyDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(key: List<UsersDB.UserKeys>)
+    fun insertAll(key: List<UsersDB.UserKeys?>?)
 
     @Query("SELECT * FROM user_keys WHERE id = :id")
     fun selectKeyById(id: Int): UsersDB.UserKeys

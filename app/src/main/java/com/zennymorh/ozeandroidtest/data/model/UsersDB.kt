@@ -8,7 +8,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class UsersDB(
-    val incompleteResults: Boolean,
+    val incompleteResults: Boolean?,
     val users: List<UserDb>,
     val totalCount: Int
 ): Parcelable {
@@ -19,26 +19,26 @@ data class UsersDB(
     @Parcelize
     @Entity(tableName = "users")
     data class UserDb(
-        val avatarUrl: String,
-        val eventsUrl: String,
-        val followersUrl: String,
-        val followingUrl: String,
-        val gistsUrl: String,
-        val gravatarId: String,
-        val htmlUrl: String,
+        val avatarUrl: String?,
+        val eventsUrl: String?,
+        val followersUrl: String?,
+        val followingUrl: String?,
+        val gistsUrl: String?,
+        val gravatarId: String?,
+        val htmlUrl: String?,
         @PrimaryKey
         val id: Int,
-        val login: String,
-        val nodeId: String,
-        val organizationsUrl: String,
-        val receivedEventsUrl: String,
-        val reposUrl: String,
-        val score: Double,
-        val siteAdmin: Boolean,
-        val starredUrl: String,
-        val subscriptionsUrl: String,
-        val type: String,
-        val url: String
+        val login: String?,
+        val nodeId: String?,
+        val organizationsUrl: String?,
+        val receivedEventsUrl: String?,
+        val reposUrl: String?,
+        val score: Double?,
+        val siteAdmin: Boolean?,
+        val starredUrl: String?,
+        val subscriptionsUrl: String?,
+        val type: String?,
+        val url: String?
     ): Parcelable
 
     @Parcelize

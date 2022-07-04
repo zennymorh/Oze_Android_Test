@@ -15,6 +15,7 @@ import io.reactivex.schedulers.Schedulers
 import java.io.InvalidObjectException
 import javax.inject.Inject
 
+
 @OptIn(ExperimentalPagingApi::class)
 class UserRemoteMediator @Inject constructor(
     private val apiService: ApiService,
@@ -36,7 +37,7 @@ class UserRemoteMediator @Inject constructor(
                     LoadType.REFRESH -> {
                         val keys = getKeyClosestToCurrentPosition(state)
 
-                        keys?.nextKey?.minus(1) ?: 1
+                        keys?.nextKey?.plus(1) ?: 1
                     }
                     LoadType.APPEND -> {
                         val remoteKeys = getKeyForLastItem(state)
@@ -55,6 +56,23 @@ class UserRemoteMediator @Inject constructor(
             .flatMap { page ->
                 if (page == INVALID_PAGE) {
                     Single.just(MediatorResult.Success(endOfPaginationReached = true))
+                } else {
+                    apiService.getUsers(
+                        page = page,
+                        q = "lagos"
+                    )
+                        .map { users ->
+                            userMapper.toUserDb(users)
+                        }
+                        .map { usersDb ->
+                            insertIntoDb(page, loadType, usersDb)
+                        }
+                        .map<MediatorResult> { usersDb ->
+                            MediatorResult.Success(endOfPaginationReached = page > usersDb.endOfPage)
+                        }
+                        .onErrorReturn {
+                            MediatorResult.Error(it)
+                        }
                 }
 
                 apiService.getUsers(

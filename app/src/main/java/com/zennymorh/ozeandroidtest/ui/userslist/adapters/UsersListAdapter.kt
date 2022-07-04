@@ -1,4 +1,4 @@
-package com.zennymorh.ozeandroidtest.adapters
+package com.zennymorh.ozeandroidtest.ui.userslist.adapters
 
 import android.view.LayoutInflater
 import android.view.View

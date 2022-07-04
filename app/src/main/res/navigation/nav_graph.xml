@@ -21,6 +21,6 @@
         tools:layout="@layout/fragment_user_detail" >
         <argument
             android:name="user"
-            app:argType="com.zennymorh.ozeandroidtest.data.model.UsersDB$UserDb" />
+            app:argType="string" />
     </fragment>
 </navigation>

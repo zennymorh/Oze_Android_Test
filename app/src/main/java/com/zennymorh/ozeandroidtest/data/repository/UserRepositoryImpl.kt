@@ -30,8 +30,6 @@ class UserRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ): UserRepository {
 
-    val listState = MutableLiveData<ListState?>(null)
-
     override fun getUserDetail(username: String): Disposable {
         return apiService.getUserDetail(username)
             .subscribeOn(Schedulers.io())
