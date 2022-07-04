@@ -75,22 +75,10 @@ class UserRemoteMediator @Inject constructor(
                         }
                 }
 
-                apiService.getUsers(
-                    page = page,
-                    q = "lagos"
-                )
-                    .map { users ->
-                        userMapper.toUserDb(users)
-                    }
-                    .map { usersDb ->
-                        insertIntoDb(page, loadType, usersDb)
-                    }
-                    .map<MediatorResult> { usersDb ->
-                        MediatorResult.Success(endOfPaginationReached = page > usersDb.endOfPage)
-                    }
-                    .onErrorReturn { MediatorResult.Error(it) }
             }
-            .onErrorReturn { MediatorResult.Error(it) }
+            .onErrorReturn {
+                MediatorResult.Error(it)
+            }
     }
 
     private fun insertIntoDb(page: Int, loadType: LoadType, data: UsersDB): UsersDB {

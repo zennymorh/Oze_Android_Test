@@ -26,6 +26,7 @@ object RetrofitModule {
         Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(okhttpClient())
             .build()
 
